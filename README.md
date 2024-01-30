@@ -32,7 +32,7 @@
 
 ## 四.功能描述
 
-![image-20240130184814196](C:\Users\27132\AppData\Roaming\Typora\typora-user-images\image-20240130184814196.png)
+![image](https://github.com/a12bb/rigee/blob/main/describeimg/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-01-30%20184747.png)
 
 ### 移动端前台主要功能有：
 
