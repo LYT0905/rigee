@@ -16,7 +16,7 @@
 
 ## 二.功能清单
 
-  ![image-20240130184559244](C:\Users\27132\AppData\Roaming\Typora\typora-user-images\image-20240130184559244.png)
+  ![image](https://github.com/a12bb/rigee/blob/main/describeimg/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-01-30%20184554.png)
 
 ## 三.技术架构
 
