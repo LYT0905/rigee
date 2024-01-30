@@ -16,11 +16,11 @@
 
 ## 二.功能清单
 
-  ![image-20240130184559244](C:\Users\27132\AppData\Roaming\Typora\typora-user-images\image-20240130184559244.png)
+  ![image](https://github.com/a12bb/rigee/blob/main/describeimg/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-01-30%20184554.png)
 
 ## 三.技术架构
 
-![image-20240130184734962](C:\Users\27132\AppData\Roaming\Typora\typora-user-images\image-20240130184734962.png)
+![image](https://github.com/a12bb/rigee/blob/main/describeimg/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-01-30%20184724.png)
 
 项目属于前后端分离，前端使用H5页面以及vue框架构建页面，或者使用微信小程序开发。
 
@@ -32,7 +32,7 @@
 
 ## 四.功能描述
 
-![image-20240130184814196](C:\Users\27132\AppData\Roaming\Typora\typora-user-images\image-20240130184814196.png)
+![image](https://github.com/a12bb/rigee/blob/main/describeimg/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-01-30%20184747.png)
 
 ### 移动端前台主要功能有：
 
