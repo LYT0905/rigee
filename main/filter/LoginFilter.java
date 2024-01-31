@@ -2,6 +2,7 @@ package com.filter;
 
 
 import com.alibaba.fastjson.JSON;
+import com.common.BaseContext;
 import com.common.R;
 import org.springframework.util.AntPathMatcher;
 
@@ -30,13 +31,14 @@ public class LoginFilter implements Filter {
         // 设置不过滤的路径
         String[] urls = new String[]{"/backend/**", "/front/**", "/employee/login", "/employee/logout"};
         String requestURI = request.getRequestURI();
-        Object employee = request.getSession().getAttribute("employee");
+        Long employee = (Long) request.getSession().getAttribute("employee");
         boolean check = check(urls, requestURI);
         if (check){
             filterChain.doFilter(request, response);
             return;
         }
         if (employee != null){
+            BaseContext.setId(employee);
             filterChain.doFilter(request, response);
             return;
         }
