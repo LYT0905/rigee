@@ -29,7 +29,13 @@ public class LoginFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         // 设置不过滤的路径
-        String[] urls = new String[]{"/backend/**", "/front/**", "/employee/login", "/employee/logout"};
+        String[] urls = new String[]{"/employee/login",
+                "/employee/logout",
+                "/backend/**",
+                "/front/**",
+                "/common/**",
+                "/user/sendMsg",
+                "/user/login"};
         String requestURI = request.getRequestURI();
         Long employee = (Long) request.getSession().getAttribute("employee");
         boolean check = check(urls, requestURI);
@@ -37,9 +43,23 @@ public class LoginFilter implements Filter {
             filterChain.doFilter(request, response);
             return;
         }
+        /**
+         * web端登录校验
+         */
         if (employee != null){
             BaseContext.setId(employee);
             filterChain.doFilter(request, response);
+            return;
+        }
+
+        /**
+         * 移动端登录校验
+         */
+        if(request.getSession().getAttribute("user") != null){
+            Long userId = (Long) request.getSession().getAttribute("user");
+            BaseContext.setId(userId);
+
+            filterChain.doFilter(request,response);
             return;
         }
         response.getWriter().write(JSON.toJSONString(R.error("NOTLOGIN")));
