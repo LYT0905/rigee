@@ -5,10 +5,15 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.common.R;
+import com.dto.DishDto;
 import com.dto.SetmealDto;
 import com.pojo.Category;
+import com.pojo.Dish;
 import com.pojo.Setmeal;
+import com.pojo.SetmealDish;
 import com.service.CategoryService;
+import com.service.DishService;
+import com.service.SetmealDishService;
 import com.service.SetmealService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +36,12 @@ public class SetmealController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private SetmealDishService setmealDishService;
+
+    @Autowired
+    private DishService dishService;
 
     /**
      * 保存套餐
@@ -145,5 +156,31 @@ public class SetmealController {
         List<Setmeal> list = setmealService.list(queryWrapper);
 
         return R.success(list);
+    }
+
+    /**
+     * 移动端查看套餐详情(补充)
+     * @param id
+     * @return
+     */
+    @GetMapping("/dish/{id}")
+    public R<List<DishDto>> detail(@PathVariable Long id){
+        QueryWrapper<SetmealDish> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("setmeal_id", id);
+        List<SetmealDish> list = setmealDishService.list(queryWrapper);
+
+        List<DishDto> dtoList = list.stream().map((item) -> {
+            DishDto dishDto = new DishDto();
+            BeanUtils.copyProperties(item, dishDto);
+            //这里是为了把套餐中的菜品的基本信息填充到dto中，比如菜品描述，菜品图片等菜品的基本信息
+            Long dishId = item.getDishId();
+            Dish dish = dishService.getById(dishId);
+            //将菜品信息拷贝到dishDto中
+            if(dish != null){
+                BeanUtils.copyProperties(dish, dishDto);
+            }
+            return dishDto;
+        }).collect(Collectors.toList());
+        return R.success(dtoList);
     }
 }
