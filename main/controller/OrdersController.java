@@ -13,6 +13,7 @@ import com.service.OrdersService;
 import com.service.ShoppingCartService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -49,7 +50,7 @@ public class OrdersController {
     }
 
     /**
-     * 查看订单
+     * 查看订单(补充)
      * @param page
      * @param pageSize
      * @return
@@ -84,6 +85,11 @@ public class OrdersController {
         return R.success(dtoPage);
     }
 
+    /**
+     * 再来一单(补充)
+     * @param map
+     * @return
+     */
     @PostMapping("/again")
     public R<String> again(@RequestBody Map<String, String> map){
         String ids = map.get("id");
@@ -128,5 +134,25 @@ public class OrdersController {
         shoppingCartService.saveBatch(shoppingCartList);
 
         return R.success("操作成功");
+    }
+
+    /**
+     * 后台显示订单详情
+     * @param page
+     * @param pageSize
+     * @param number
+     * @param beginTime
+     * @param endTime
+     * @return
+     */
+    @GetMapping("/page")
+    public R<Page<Orders>> page(int page, int pageSize, Long number, String beginTime, String endTime){
+        Page<Orders> pageInfo = new Page<>(page, pageSize);
+        QueryWrapper<Orders> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(number != null, "number", number).
+                gt(StringUtils.hasLength(beginTime), "order_time", beginTime).
+                lt(StringUtils.hasLength(endTime), "order_time", endTime);
+        Page<Orders> page1 = ordersService.page(pageInfo, queryWrapper);
+        return R.success(page1);
     }
 }
