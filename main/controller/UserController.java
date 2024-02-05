@@ -85,4 +85,15 @@ public class UserController {
         }
         return R.error("登录失败");
     }
+
+    /**
+     * 用户退出功能
+     * @param session
+     * @return
+     */
+    @PostMapping("/loginout")
+    public R<String> loginout(HttpSession session){
+        session.removeAttribute("user");
+        return R.success("退出成功");
+    }
 }
