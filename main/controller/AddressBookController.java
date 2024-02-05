@@ -2,6 +2,7 @@ package com.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.common.BaseContext;
 import com.common.R;
@@ -96,10 +97,40 @@ public class AddressBookController {
 
         //条件构造器
         LambdaQueryWrapper<AddressBook> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(null != addressBook.getUserId(), AddressBook::getUserId, addressBook.getUserId());
-        queryWrapper.orderByDesc(AddressBook::getUpdateTime);
+        queryWrapper.eq(null != addressBook.getUserId(), AddressBook::getUserId, addressBook.getUserId()).
+                eq(AddressBook::getIsDeleted, 0).orderByDesc(AddressBook::getUpdateTime);
 
         //SQL:select * from address_book where user_id = ? order by update_time desc
         return R.success(addressBookService.list(queryWrapper));
+    }
+
+    /**
+     * 修改地址信息
+     * 补充
+     * @param addressBook
+     * @return
+     */
+    @PutMapping
+    public R<String> update(@RequestBody AddressBook addressBook) {
+        if (!addressBookService.updateById(addressBook)) {
+            return R.error("修改地址信息失败，请稍后重试");
+        }
+        return R.success("修改地址信息成功");
+    }
+
+    /**
+     * 根据id删除地址（逻辑删除）
+     * 补充
+     * @return
+     */
+    @DeleteMapping
+    public R<String> delete(Long ids) {
+        UpdateWrapper<AddressBook> addressBookUpdateWrapper = new UpdateWrapper<>();
+        addressBookUpdateWrapper.set("is_deleted", 1);
+        addressBookUpdateWrapper.eq("id", ids);
+        if (!addressBookService.update(addressBookUpdateWrapper)) {
+            return R.error("删除地址信息失败，请稍后重试");
+        }
+        return R.error("删除地址信息成功");
     }
 }
