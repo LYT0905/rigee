@@ -155,4 +155,25 @@ public class OrdersController {
         Page<Orders> page1 = ordersService.page(pageInfo, queryWrapper);
         return R.success(page1);
     }
+
+    /**
+     * 修改后台订单状态
+     * @param map
+     * @return
+     */
+    @PutMapping
+    public R<String> update(@RequestBody Map<String, String> map){
+        String id = map.get("id");
+        Long orderId = Long.parseLong(id);//将接收到的id转为Long型
+        Integer status = Integer.parseInt(map.get("status"));//转为Integer型
+
+        if(orderId == null || status==null){
+            return R.error("状态修改失败，请稍后重试");
+        }
+
+        Orders orders = ordersService.getById(orderId);
+        orders.setStatus(status);
+        ordersService.updateById(orders);
+        return R.success("修改状态成功");
+    }
 }
